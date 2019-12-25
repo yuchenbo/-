@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数组去重</title>
+    <link href="./prism.css" rel="stylesheet" />
+</head>
+<body>
+<header>
+数组去重
+</header>
+<!-- JavaScript代码 -->
+<!-- 使用行号插件和高亮插件 -->
+<pre>
+    <div>推荐使用hasOwnProperty的方法对数组去重</div>
+            <code class="language-javascript">
+                function unique6 (arr) {
+                    var obj = {};
+                    return arr.filter(function(cur, index, arr) {
+                        return obj.hasOwnProperty(typeof cur + cur) ? false : (obj[typeof cur + cur] = true)
+                    })
+                }
+            </code>
+        </pre>
+
+<script src="./prism.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        var arr = [1,1,2,3,'true','true',true,true,15,15,false,false,undefined,undefined,null,null,NaN,NaN,'NaN',0,0,'a','a',{},{}];
+        // 利用for嵌套for，然后splice去重（ES5中最常用）,数组中存在多个0的时候有BUG
+        function unique1 (arr) {
+            for (var i = 0; i < arr.length; i ++) {
+                for (var j = i+1; j < arr.length; j ++) {
+                    if (arr[i] == arr[j]) {
+                        arr.splice(j, 1);
+                        break;
+                    }
+                }
+            }
+            return arr;
+        }
+        console.log(unique1(arr), 'for')
+        // 利用indexOf 去重
+        function unique2 (arr) {
+            if (!Array.isArray(arr)) {
+                console.log('type error!')
+                return
+            }
+            var array = [];
+            for (var i = 0; i < arr.length; i++) {
+                if (array.indexOf(arr[i]) === -1) {
+                    array.push(arr[i])
+                }
+            }
+            return array;
+        }
+        console.log(unique2(arr), 'indexOf')
+        // 利用sort去重，数组中存在多个0的时候有BUG
+        function unique3 (arr) {
+            if (!Array.isArray(arr)) {
+                console.log('type error!')
+                return
+            }
+            arr = arr.sort()
+            var array = [arr[0]]
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] !== arr[i-1]) {
+                    array.push(arr[i])
+                }
+            }
+            return array;
+        }
+        console.log(unique3(arr), 'sort')
+        // 利用对象的属性不能相同的特点进行去重
+        function unqiue4 (arr) {
+            if (!Array.isArray(arr)) {
+                console.log('type error!')
+                return
+            }
+            var array = [];
+            var obj = {};
+            for (var i = 0; i < arr.length; i++) {
+                if ( !obj[arr[i]]) {
+                    array.push(arr[i])
+                } else {
+                    obj[arr[i]] = 1
+                }
+            }
+            return array;
+        }
+        console.log(unqiue4(arr), 'obj')
+        // includes去重
+        function unique5 (arr) {
+            if (!Array.isArray(arr)) {
+                console.log('type error!')
+                return
+            }
+            var array = [];
+            for (var i = 0; i < arr.length; i++) {
+                if (!array.includes(arr[i])) {
+                    array.push(arr[i])
+                }
+            }
+            return array;
+        }
+        console.log(unique5(arr), 'includes')
+        // 利用hasOwnProperty判断对象是否存在属性，推荐使用，可以去除值和类型都一致的数据
+        function unique6 (arr) {
+            var obj = {};
+            return arr.filter(function(cur, index, arr) {
+                return obj.hasOwnProperty(typeof cur + cur) ? false : (obj[typeof cur + cur] = true)
+            })
+        }
+        console.log(unique6(arr), 'hasOwnProperty')
+        // 利用filter去重
+        function unique7 (arr) {
+            return arr.filter(function(cur, index, arr) {
+                return arr.indexOf(cur, 0) === index
+            })
+        }
+        console.log(unique7(arr), 'filter')
+        // 利用递归数组去重
+        function unique8 (arr) {
+            var array = arr;
+            var len = array.length;
+            function loop (index) {
+                if (index >= 1) {
+                    if (array[index] === array[index-1]) {
+                        array.splice(index, 1)
+                    }
+                    loop(index - 1)
+                }
+            }
+            loop(len - 1)
+            return array
+        }
+        console.log(unique8(arr), 'recursion')
+        // 利用es6的new Set给数组去重
+        function unique9 (arr) {
+            return Array.from(new Set(arr))
+        }
+        console.log(unique9(arr), 'Set1')
+        // 利用es6的new Set和数组展开给数组去重
+        function unique10 (arr) {
+            return [...new Set(arr)]
+        }
+        console.log(unique10(arr), 'Set2')
+        // 利用Map的数据结构去重
+        function unique11 (arr) {
+            let map = new Map();
+            let array = new Array();
+            for (let i = 0; i < arr.length; i++) {
+                if (map.has(arr[i])) {
+                    map.set(arr[i], true)
+                } else {
+                    map.set(arr[i], false)
+                    array.push(arr[i])
+                }
+            }
+            console.log(map)
+            return array;
+        }
+        console.log(unique11(arr), 'Map')
+    }
+</script>
+</body>
+</html>
