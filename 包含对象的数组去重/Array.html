@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <title>包含对象</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+    	window.onload = function() {
+    		var arr = [{value: 1}, {value: 2}, {value: 1}];
+    		/*
+	    		利用reduce方法去重复
+	    		使用方法：
+	    			arr.reduce(callback(accumulator, currentValue), [initialValue])
+	    		参数：
+		    		accumulator
+					累计器累计回调的返回值; 它是上一次调用回调时返回的累积值，或initialValue（见于下方）
+					currentValue
+					数组中正在处理的元素
+					initialValue可选
+					作为第一次调用 callback函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
+    		 */
+    		function Reduce() {
+    			let outs = [];
+    			let isContain = {};
+    			arr = arr.reduce(function(item, cur) {
+    				isContain[String(cur.value)] ? '' : isContain[String(cur.value)] = true && item.push(cur)
+    				return item;
+    			}, [])
+    			return arr;
+    		}
+    		console.log(Reduce(arr), 'reduce')
+
+    		// 利用对象的key不能相同的特点去重复
+    		function RemoveKeys() {
+    			let outs = [];
+    			let isContain = {};
+    			arr.forEach(item => {
+    				if (!isContain[String(item.value)]) {
+    					isContain[String(item.value)] = true;
+    					outs.push(item)
+    				}
+    			})
+    			return outs;
+    		}
+    		console.log(RemoveKeys(arr), 'dublicatedKeysRemoved')
+
+    		// 循环遍历，挨个比较，最笨的方法
+    		function Traverse() {
+    			let outs = [];
+    			for(let i = 0; i < arr.length; i++) {
+    				var flag = true;
+    				for (let j = 0; j < outs.length; j++) {
+    					if (arr[i].value == outs[j].value) {
+    						flag = false;
+    					}
+    				}
+    				if (flag) {
+    					outs.push(arr[i])
+    				}
+    			}
+    			return outs;
+    		}
+    		console.log(Traverse(arr), 'Traverse')
+    	}
+    </script>
+</body>
+
+</html>
