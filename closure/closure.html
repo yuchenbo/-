@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <title>闭包</title>
+</head>
+
+<body>
+    <div>输出包含0到99元素的数组，<b>分别使用两种方式，一种使用循环，一种不使用循环</b></div>
+    <script type="text/javascript">
+    	window.onload = function() {
+            // 循环 + let
+    		function letMethod() {
+                let arr = [];
+                for (let i = 0; i < 100; i++) {
+                    arr.push(i)
+                }
+                return arr;
+            }
+            console.log(letMethod(), 'letMethod')
+
+            // 循环 + 立即执行函数
+            function excuteImmediately() {
+                let arr = [];
+                for (var i = 0; i < 100; i++) {
+                    (function() {
+                        arr.push(i)
+                    })(i)
+                }
+                return arr;
+            }
+            console.log(excuteImmediately(), 'excuteImmediately')
+
+            //  不循环 + 递归
+            let arr = []
+            function recursive(num) {
+                if (num < 100) {
+                    arr.push(num)
+                    recursive(++num)
+                } else {
+                    console.log('end')
+                }
+                return arr;
+            }
+            console.log(recursive(0), 'recursive')
+
+            // 使用数组的apply的方法，第二个参数可以是数组或者类数组的结构
+            // 学习参考链接：https://segmentfault.com/a/1190000011435501
+            let arr0 = Array.apply(null, {length: 100}).map((item, index) => {
+                return index;
+            })
+            console.log(arr0, 'apply')
+
+            // 不循环 + 使用Array.from
+            let arr1 = Array.from({length: 100}).map((item, index) => {
+                return index;
+            })
+            console.log(arr1, 'Array.from')
+
+            // 不循环 + Array.fill
+             let arr2 = new Array(100).fill(null).map((item, index) => {
+                return index;
+            })
+            console.log(arr1, 'Array.fill')
+    	}
+    </script>
+</body>
+
+</html>
